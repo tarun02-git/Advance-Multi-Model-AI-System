@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   langflow:
-    build:
-      context: .
-      dockerfile: Dockerfile.langflow
+    image: logspace/langflow:latest
     ports:
       - "7860:7860"
     environment:
@@ -22,11 +20,6 @@ services:
     restart: unless-stopped
     depends_on:
       - redis
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7860/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   redis:
     image: redis:latest

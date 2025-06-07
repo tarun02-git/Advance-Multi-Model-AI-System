@@ -1,132 +1,87 @@
-# Multi-Agent AI System
+# FlowBit - Visual Workflow Orchestration
 
-A sophisticated multi-agent AI system built by **Tarun Agarwal** that processes and routes different types of input (PDF, JSON, Email) to specialized agents for intelligent processing and analysis.
+FlowBit is a modern workflow orchestration system built with Next.js, LangFlow, and shadcn/ui. It provides a visual interface for creating and managing workflows using LangFlow's powerful flow editor.
 
 ## Features
 
-- **Classifier Agent**: Intelligent format and intent detection
-- **JSON Agent**: Structured data processing and validation
-- **Email Agent**: Email content analysis and extraction
-- **Shared Memory Module**: Context preservation across agents (in-memory, no Redis required)
-- **Multiple Input Format Support**: PDF, JSON, Email
-- **Intent Classification**: Invoice, RFQ, Complaint, Regulation, etc.
+- Visual workflow editor powered by LangFlow
+- Real-time workflow execution monitoring
+- Multiple execution methods (manual, webhook, cron)
+- Modern and responsive UI with shadcn/ui
+- Docker-based deployment with Redis for persistence
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- Docker and Docker Compose
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/flowbit.git
+   cd flowbit
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the LangFlow and Redis services:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. Create a `.env.local` file with the following content:
+   ```
+   NEXT_PUBLIC_LANGFLOW_URL=http://localhost:3000
+   ```
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
 ```
-multi-agent-ai/
-├── agents/
-│   ├── classifier_agent.py
-│   ├── json_agent.py
-│   └── email_agent.py
-├── memory/
-│   └── shared_memory.py
-├── utils/
-│   ├── file_handlers.py
-│   └── validators.py
-├── config/
-│   └── settings.py
-├── tests/
-│   └── test_agents.py
-├── samples/
-│   ├── sample.pdf
-│   ├── sample.json
-│   └── sample_email.txt
-├── requirements.txt
-├── main.py
-├── templates/
-│   └── index.html
-├── static/
-│   └── styles.css
+flowbit/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout with sidebar
+│   ├── page.tsx           # Dashboard page
+│   ├── workflow/          # Workflow pages
+│   └── settings/          # Settings page
+├── components/            # React components
+│   ├── ui/               # UI components (shadcn/ui)
+│   ├── workflow-list.tsx # Workflow list component
+│   └── execution-list.tsx # Execution list component
+├── lib/                  # Utility functions
+├── public/              # Static assets
+└── styles/             # Global styles
 ```
 
-## Setup and Installation
+## Development
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/multi-agent-ai.git
-cd multi-agent-ai
-```
+- `npm run dev` - Start the development server
+- `npm run build` - Build the production application
+- `npm run start` - Start the production server
+- `npm run lint` - Run ESLint
 
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+## Deployment
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+1. Build the application:
+   ```bash
+   npm run build
+   ```
 
-## Usage
-
-Run the main application:
-```bash
-python main.py
-```
-
-The app will be available at [http://localhost:8000](http://localhost:8000)
-
-- Main UI: [http://localhost:8000](http://localhost:8000)
-- API Docs: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
-
-## Input Formats
-
-### JSON (as string in `content` field)
-**Important:** The `/process` endpoint expects a JSON object with a `content` field containing your actual data as a string.
-
-Example request body for `/process`:
-```json
-{
-  "content": "{\"type\": \"invoice\", \"data\": {\"invoice_number\": \"INV-001\", \"amount\": 1000, \"date\": \"2024-03-20\"}}"
-}
-```
-
-### Email (as string in `content` field)
-```json
-{
-  "content": "From: sender@example.com\nSubject: RFQ for Office Supplies\nDate: 2024-03-20\n\nDear Supplier,\nWe are interested in purchasing office supplies..."
-}
-```
-
-### PDF
-- Use the `/process/file` endpoint and upload a PDF file directly.
-- The system will auto-detect and process the PDF.
-
-## Memory Module
-
-The system uses a lightweight in-memory memory module to maintain context across agents:
-- Source tracking
-- Type classification
-- Timestamp logging
-- Extracted values storage
-- Thread/conversation tracking
-
-## Testing
-
-Run the test suite:
-```bash
-pytest tests/
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+2. Start the production server:
+   ```bash
+   npm run start
+   ```
 
 ## License
 
-MIT License
-
-## Author
-
-- Tarun Agarwal
-
-## Acknowledgments
-
-- OpenAI for LLM capabilities
-- Python community for excellent libraries 
+MIT 
