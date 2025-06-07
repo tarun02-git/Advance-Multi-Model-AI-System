@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  langflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.langflow
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_DATABASE_URL=sqlite:///langflow.db
+      - LANGFLOW_SUPERUSER=admin
+      - LANGFLOW_SUPERUSER_PASSWORD=admin
+      - LANGFLOW_HOST=0.0.0.0
+      - LANGFLOW_PORT=7860
+      - LANGFLOW_DEFAULT_FLOWS_PATH=/app/flows
+    volumes:
+      - langflow_data:/app/langflow
+      - ./flows:/app/flows
+    networks:
+      - flowbit_network
+    restart: unless-stopped
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass flowbit123 --protected-mode yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - flowbit_network
+    restart: unless-stopped
+
+volumes:
+  langflow_data:
+  redis_data:
+
+networks:
+  flowbit_network:
+    driver: bridge 
